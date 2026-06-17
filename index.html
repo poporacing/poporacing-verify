@@ -287,6 +287,12 @@
       border: 2px solid var(--accent);
       border-radius: 14px;
       overflow: hidden;
+      box-shadow: 0 4px 20px rgba(212,175,55,0.18);
+      animation: promiseFadeIn 0.5s ease;
+    }
+    @keyframes promiseFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .promise-header {
       background: linear-gradient(135deg, var(--primary) 0%, #1a2744 100%);
@@ -304,6 +310,48 @@
       padding: 16px 18px;
     }
     .promise-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px dashed #f0e6c8;
+    }
+    .promise-item:last-child { border-bottom: none; }
+    .promise-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gold-light);
+      border-radius: 8px;
+    }
+    .promise-text {
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #444;
+      flex: 1;
+    }
+    .promise-cta {
+      display: block;
+      margin: 14px 18px 18px;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: var(--primary);
+      text-align: center;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .promise-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(212,175,55,0.4);
+    }
       display: flex;
       gap: 10px;
       margin-bottom: 12px;
@@ -467,11 +515,14 @@
           <div class="promise-section" id="promiseSection" style="display:none;">
             <div class="promise-header">
               <span>🛡️</span>
-              <span id="promise-title">POPORACING WARRANTY PROMISE</span>
+              <span id="promiseTitle">POPORACING WARRANTY PROMISE</span>
             </div>
             <div class="promise-body" id="promiseBody">
               <!-- Filled by JS -->
             </div>
+            <a href="mailto:warranty@poporacing.com?subject=PADM%20Warranty%20Claim&body=Hello%2C%20I%20would%20like%20to%20register%20my%20PADM%20product%20warranty.%0A%0ACode%3A%20" class="promise-cta" id="promiseCta">
+              📋 REGISTER WARRANTY / CLAIM
+            </a>
           </div>
         </div>
       </div>
@@ -554,6 +605,7 @@ const LANGS = {
     statusInvalid:  "INVALID ✗",
     // Warranty Promise
     promiseTitle:   "POPORACING WARRANTY PROMISE",
+    promiseCta:     "📋 REGISTER WARRANTY / CLAIM",
     promises: [
       { icon: "🛡️", text: "<strong>2-Year Warranty:</strong> Every genuine PADM product is covered by our 24-month manufacturing warranty." },
       { icon: "💯", text: "<strong>100% Authenticity Guarantee:</strong> If you verify a code and later discover it was not genuine, we will refund <strong>200% of your purchase price</strong>." },
@@ -592,6 +644,7 @@ const LANGS = {
     statusSuspicious:"ПОДОЗРИТЕЛЬНО ⚠️",
     statusInvalid:  "НЕДЕЙСТВИТЕЛЬНЫЙ ✗",
     promiseTitle:   "ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА POPORACING",
+    promiseCta:     "📋 ЗАРЕГИСТРИРОВАТЬ ГАРАНТИЮ",
     promises: [
       { icon: "🛡️", text: "<strong>2-летняя гарантия:</strong> Каждый оригинальный PADM продукт покрывается нашей 24-месячной гарантией производителя." },
       { icon: "💯", text: "<strong>100% гарантия подлинности:</strong> Если вы проверили код и позже обнаружили, что товар не оригинальный, мы вернем <strong>200% стоимости покупки</strong>." },
@@ -630,6 +683,7 @@ const LANGS = {
     statusSuspicious:"SOSPECHOSO ⚠️",
     statusInvalid:  "INVÁLIDO ✗",
     promiseTitle:   "PROMESA DE GARANTÍA POPORACING",
+    promiseCta:     "📋 REGISTRAR GARANTÍA",
     promises: [
       { icon: "🛡️", text: "<strong>Garantía de 2 años:</strong> Cada producto PADM genuino está cubierto por nuestra garantía de 24 meses." },
       { icon: "💯", text: "<strong>Garantía de autenticidad 100%:</strong> Si verifica un código y luego descubre que no era genuino, reembolsaremos el <strong>200% del precio de compra</strong>." },
@@ -668,6 +722,7 @@ const LANGS = {
     statusSuspicious:"可疑 ⚠️",
     statusInvalid:  "无效 ✗",
     promiseTitle:   "POPORACING 质保承诺",
+    promiseCta:     "📋 立即申请质保 / 登记",
     promises: [
       { icon: "🛡️", text: "<strong>2年质保：</strong>每一件正品 PADM 产品均享受我们24个月的制造质保服务。" },
       { icon: "💯", text: "<strong>100%正品保证：</strong>如您验证的编码对应的产品经证实非正品，我们将退还<strong>您购买价格的200%</strong>。" },
@@ -816,6 +871,7 @@ function doVerify(code) {
         { label: t.labelScans,  value: "1" },
         { label: t.labelStatus, value: t.statusGenuine },
       ], true, true);
+      console.log("[Poporacing] Genuine result shown, warranty promise section enabled.");
     } else {
       // Already scanned
       showResult("warn", "⚠️", t.validRepeat,
@@ -848,13 +904,25 @@ function showResult(type, icon, status, desc, details, showProduct, showPromise)
   if (showPromise) {
     const t = T();
     const body = document.getElementById("promiseBody");
-    body.innerHTML = t.promises.map(p =>
-      `<div class="promise-item">
-        <div class="promise-icon">${p.icon}</div>
-        <div class="promise-text">${p.text}</div>
-      </div>`
-    ).join("");
-    document.getElementById("promiseTitle").textContent = t.promiseTitle;
+    if (t.promises && Array.isArray(t.promises)) {
+      body.innerHTML = t.promises.map(p =>
+        `<div class="promise-item">
+          <div class="promise-icon">${p.icon}</div>
+          <div class="promise-text">${p.text}</div>
+        </div>`
+      ).join("");
+    }
+    const titleEl = document.getElementById("promiseTitle");
+    if (titleEl) titleEl.textContent = t.promiseTitle;
+
+    // Update CTA button text + auto-fill current code
+    const ctaEl = document.getElementById("promiseCta");
+    if (ctaEl) {
+      ctaEl.textContent = t.promiseCta || "📋 REGISTER WARRANTY / CLAIM";
+      const currentCode = (details.find(d => d.label === t.labelCode) || {}).value || "";
+      ctaEl.href = `mailto:warranty@poporacing.com?subject=PADM%20Warranty%20Claim&body=Hello%2C%20I%20would%20like%20to%20register%20my%20PADM%20product%20warranty.%0A%0ACode%3A%20${encodeURIComponent(currentCode)}`;
+    }
+    console.log("[Poporacing] Warranty promise rendered with", t.promises ? t.promises.length : 0, "items.");
   }
 
   box.style.display = "block";
