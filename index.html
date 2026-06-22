@@ -6,6 +6,14 @@
 <title>POPORACING PADM - Authenticity Verification</title>
 <style>
   :root {
+    --primary: #0a1628;<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPORACING PADM - Authenticity Verification</title>
+<style>
+  :root {
     --primary: #0a1628;
     --primary-light: #1a2744;
     --accent: #d4af37;
@@ -14,6 +22,1076 @@
     --success: #1a7f4d;
     --success-bg: #e8f5ee;
     --warning: #b8860b;
+    --warning-bg: #fff8e1;
+    --danger: #b91c1c;
+    --danger-bg: #fef2f2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f5f0;
+    min-height: 100vh;
+    color: #222;
+  }
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 36px 20px 28px;
+    text-align: center;
+    color: #fff;
+    border-bottom: 3px solid var(--accent);
+  }
+  .hero-brand { color: var(--accent); font-size: 14px; letter-spacing: 4px; font-weight: 600; margin-bottom: 8px; }
+  .hero-title { font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 6px; }
+  .hero-sub { color: #b8c0d0; font-size: 11px; letter-spacing: 2px; margin-bottom: 18px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(212,175,55,0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .container { max-width: 600px; margin: 0 auto; padding: 24px 20px 60px; }
+  .lang-switcher { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .lang-btn {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    padding: 6px 14px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #555;
+    transition: all 0.2s;
+  }
+  .lang-btn.active { background: var(--primary); color: var(--accent); border-color: var(--primary); font-weight: 600; }
+  .verify-card { background: #fff; border-radius: 14px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .verify-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #222; }
+  .input-group { display: flex; gap: 8px; }
+  .code-input {
+    flex: 1;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: "SF Mono", "Monaco", monospace;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 8px;
+    outline: none;
+    letter-spacing: 1px;
+    transition: border 0.2s;
+  }
+  .code-input:focus { border-color: var(--accent); }
+  .verify-btn {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .verify-btn:hover { background: var(--primary-light); }
+  .help-text { font-size: 11.5px; color: #888; margin-top: 10px; line-height: 1.6; }
+  .result-box { margin-top: 24px; border-radius: 12px; padding: 20px; text-align: center; }
+  .result-box.success { background: var(--success-bg); border: 2px solid var(--success); }
+  .result-box.warning { background: var(--warning-bg); border: 2px solid var(--warning); }
+  .result-box.danger  { background: var(--danger-bg);  border: 2px solid var(--danger); }
+  .result-icon { font-size: 48px; margin-bottom: 8px; }
+  .result-title { font-size: 17px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+  .result-box.success .result-title { color: var(--success); }
+  .result-box.warning .result-title { color: var(--warning); }
+  .result-box.danger  .result-title { color: var(--danger); }
+  .result-desc { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 14px; }
+  .result-desc strong { color: #222; }
+  .detail-table { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; text-align: left; }
+  .detail-row { display: flex; justify-content: space-between; padding: 9px 14px; font-size: 12.5px; border-bottom: 1px solid #f0f0f0; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row .label { color: #888; }
+  .detail-row .value { color: #222; font-weight: 600; font-family: "SF Mono", "Monaco", monospace; }
+  .promise-section {
+    margin-top: 24px;
+    background: #fff;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.18);
+    animation: promiseFadeIn 0.5s ease;
+  }
+  @keyframes promiseFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .promise-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a2744 100%);
+    color: var(--accent);
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .promise-body { padding: 16px 18px; }
+  .promise-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed #f0e6c8;
+  }
+  .promise-item:last-child { border-bottom: none; }
+  .promise-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold-light);
+    border-radius: 8px;
+  }
+  .promise-text { font-size: 12.5px; line-height: 1.6; color: #444; flex: 1; }
+  .promise-cta {
+    display: block;
+    margin: 14px 18px 18px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    color: var(--primary);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .promise-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
+  .help-section { margin-top: 30px; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .help-title { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 14px; }
+  .help-item { display: flex; gap: 12px; margin-bottom: 12px; font-size: 12.5px; line-height: 1.6; color: #555; }
+  .help-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .footer { text-align: center; margin-top: 30px; font-size: 11px; color: #888; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">POPORACING</div>
+  <div class="hero-title">PADM</div>
+  <div class="hero-sub">PREMIUM AUTOMOTIVE PERFORMANCE</div>
+  <div class="hero-badge">✓ AUTHENTICITY VERIFIED</div>
+</div>
+
+<div class="container">
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="zh">ZH</button>
+  </div>
+
+  <div class="verify-card">
+    <div class="verify-title" data-i18n="verifyTitle">Enter Anti-Counterfeiting Code</div>
+    <div class="input-group">
+      <input type="text" id="codeInput" class="code-input" placeholder="12345678" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+      <button id="verifyBtn" class="verify-btn" data-i18n="verifyBtn">VERIFY</button>
+    </div>
+    <div class="help-text" data-i18n="verifyHelp">Scan QR code on product, or enter the code below the QR sticker (format: PADM-XXXXXXXXXX-XX)</div>
+
+    <div id="resultBox" style="display:none;"></div>
+  </div>
+
+  <div class="help-section">
+    <div class="help-title" data-i18n="howTitle">HOW TO VERIFY</div>
+    <div class="help-item"><div class="help-num">1</div><div data-i18n="howStep1">Locate the anti-counterfeiting sticker on your PADM product packaging.</div></div>
+    <div class="help-item"><div class="help-num">2</div><div data-i18n="howStep2">Use your phone camera or any QR scanner to scan the QR code.</div></div>
+    <div class="help-item"><div class="help-num">3</div><div data-i18n="howStep3">You will be redirected to this verification page. The result confirms authenticity.</div></div>
+    <div class="help-item"><div class="help-num">4</div><div data-i18n="howStep4">If verified as genuine, register your product warranty for full protection.</div></div>
+  </div>
+
+  <div class="footer">
+    &copy; 2026 Poporacing. All rights reserved.<br>
+    <span data-i18n="footerSupport">Customer support</span>: support@poporacing.com
+  </div>
+</div>
+
+<script>
+const i18n = {
+  en: {
+    verifyTitle: "Enter Anti-Counterfeiting Code",
+    verifyBtn: "VERIFY",
+    verifyHelp: "Scan QR code on product, or enter the 8-digit code on the sticker (e.g. 12345678)",
+    howTitle: "HOW TO VERIFY",
+    howStep1: "Locate the anti-counterfeiting sticker on your PADM product packaging.",
+    howStep2: "Use your phone camera or any QR scanner to scan the QR code.",
+    howStep3: "You will be redirected to this verification page. The result confirms authenticity.",
+    howStep4: "If verified as genuine, register your product warranty for full protection.",
+    footerSupport: "Customer support",
+    validFirst: "GENUINE POPORACING PADM",
+    validFirstDesc: "This is an authentic Poporacing PADM product. <strong>Welcome to the Poporacing family.</strong>",
+    validRepeat: "ALREADY SCANNED",
+    validRepeatDesc: "This code has been scanned {n} time(s). First scan: {time}. <strong>If you did not scan first, this product may be counterfeit.</strong> Contact us immediately.",
+    invalid: "INVALID CODE",
+    invalidDesc: "This code is not recognized in our database. <strong>This product may be counterfeit.</strong> Please contact us with this code for investigation.",
+    labelCode: "Security Code",
+    labelFirst: "First Scan",
+    labelScans: "Total Scans",
+    labelStatus: "Verification Status",
+    statusGenuine: "GENUINE",
+    statusSuspicious: "SUSPICIOUS",
+    statusInvalid: "INVALID",
+    promiseTitle: "POPORACING WARRANTY PROMISE",
+    promiseCta: "REGISTER WARRANTY / CLAIM",
+    promises: [
+      { icon: "🛡️", text: "<strong>2-Year Warranty:</strong> Every genuine PADM product is backed by a 24-month warranty against manufacturing defects." },
+      { icon: "🔧", text: "<strong>Free Replacement:</strong> Any verified genuine product with a manufacturing defect is replaced free of charge within the warranty period." },
+      { icon: "🌍", text: "<strong>Global Warranty Support:</strong> Warranty is valid worldwide. Contact poporacing1@gmail.com to file a claim." },
+      { icon: "🚀", text: "<strong>Lifetime Technical Support:</strong> Genuine PADM owners receive free installation guidance and product consultation." }
+    ]
+  },
+  ru: {
+    verifyTitle: "Введите код подлинности",
+    verifyBtn: "ПРОВЕРИТЬ",
+    verifyHelp: "Отсканируйте QR-код на упаковке или введите 8-значный код с наклейки (например: 12345678)",
+    howTitle: "КАК ПРОВЕРИТЬ",
+    howStep1: "Найдите защитную наклейку на упаковке вашего продукта PADM.",
+    howStep2: "Используйте камеру телефона или любое приложение для сканирования QR-кодов.",
+    howStep3: "Вы будете перенаправлены на эту страницу проверки. Результат подтвердит подлинность.",
+    howStep4: "Если продукт подлинный, зарегистрируйте гарантию для полной защиты.",
+    footerSupport: "Поддержка клиентов",
+    validFirst: "ПОДЛИННЫЙ POPORACING PADM",
+    validFirstDesc: "Это подлинный продукт Poporacing PADM. <strong>Добро пожаловать в семью Poporacing.</strong>",
+    validRepeat: "УЖЕ ПРОВЕРЕНО",
+    validRepeatDesc: "Этот код был отсканирован {n} раз(а). Первая проверка: {time}. <strong>Если вы не проверяли первым, возможно это подделка.</strong> Свяжитесь с нами немедленно.",
+    invalid: "НЕВЕРНЫЙ КОД",
+    invalidDesc: "Этот код не найден в нашей базе данных. <strong>Возможно, это подделка.</strong> Свяжитесь с нами для расследования.",
+    labelCode: "Код безопасности",
+    labelFirst: "Первая проверка",
+    labelScans: "Всего проверок",
+    labelStatus: "Статус проверки",
+    statusGenuine: "ПОДЛИННЫЙ",
+    statusSuspicious: "ПОДОЗРИТЕЛЬНО",
+    statusInvalid: "НЕВЕРНЫЙ",
+    promiseTitle: "ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА POPORACING",
+    promiseCta: "ЗАРЕГИСТРИРОВАТЬ ГАРАНТИЮ",
+    promises: [
+      { icon: "🛡️", text: "<strong>2-летняя гарантия:</strong> Каждый подлинный продукт PADM защищён 24-месячной гарантией от производственных дефектов." },
+      { icon: "🔧", text: "<strong>Бесплатная замена:</strong> Любой подлинный товар с производственным дефектом заменяется бесплатно в течение гарантийного срока." },
+      { icon: "🌍", text: "<strong>Глобальная гарантийная поддержка:</strong> Гарантия действует по всему миру. poporacing1@gmail.com для претензий." },
+      { icon: "🚀", text: "<strong>Пожизненная техническая поддержка:</strong> Владельцы подлинных PADM получают бесплатные консультации по установке." }
+    ]
+  },
+  es: {
+    verifyTitle: "Ingrese el código anti-falsificación",
+    verifyBtn: "VERIFICAR",
+    verifyHelp: "Escanee el código QR del producto o ingrese el código de 8 dígitos de la etiqueta (ej: 12345678)",
+    howTitle: "CÓMO VERIFICAR",
+    howStep1: "Ubique la pegatina anti-falsificación en el empaque de su producto PADM.",
+    howStep2: "Use la cámara de su teléfono o cualquier escáner QR para escanear el código.",
+    howStep3: "Será redirigido a esta página de verificación. El resultado confirma la autenticidad.",
+    howStep4: "Si se verifica como genuino, registre la garantía de su producto para protección total.",
+    footerSupport: "Atención al cliente",
+    validFirst: "POPORACING PADM GENUINO",
+    validFirstDesc: "Este es un producto Poporacing PADM auténtico. <strong>Bienvenido a la familia Poporacing.</strong>",
+    validRepeat: "YA ESCANEADO",
+    validRepeatDesc: "Este código ha sido escaneado {n} vez/veces. Primer escaneo: {time}. <strong>Si no escaneó primero, este producto podría ser falso.</strong> Contáctenos inmediatamente.",
+    invalid: "CÓDIGO INVÁLIDO",
+    invalidDesc: "Este código no se reconoce en nuestra base de datos. <strong>Este producto podría ser falso.</strong> Contáctenos con este código para investigación.",
+    labelCode: "Código de seguridad",
+    labelFirst: "Primer escaneo",
+    labelScans: "Escaneos totales",
+    labelStatus: "Estado de verificación",
+    statusGenuine: "GENUINO",
+    statusSuspicious: "SOSPECHOSO",
+    statusInvalid: "INVÁLIDO",
+    promiseTitle: "PROMESA DE GARANTÍA POPORACING",
+    promiseCta: "REGISTRAR GARANTÍA",
+    promises: [
+      { icon: "🛡️", text: "<strong>Garantía de 2 años:</strong> Cada producto PADM genuino está respaldado por una garantía de 24 meses contra defectos de fabricación." },
+      { icon: "🔧", text: "<strong>Reemplazo gratuito:</strong> Cualquier producto genuino verificado con defecto de fabricación se reemplaza sin costo dentro del período de garantía." },
+      { icon: "🌍", text: "<strong>Soporte de garantía global:</strong> La garantía es válida en todo el mundo. poporacing1@gmail.com para reclamos." },
+      { icon: "🚀", text: "<strong>Soporte técnico de por vida:</strong> Los propietarios de PADM genuino reciben orientación gratuita de instalación." }
+    ]
+  },
+  zh: {
+    verifyTitle: "请输入防伪码",
+    verifyBtn: "验 证",
+    verifyHelp: "扫描产品上的二维码，或直接输入标签上的8位数字防伪码（如：12345678）",
+    howTitle: "验证步骤",
+    howStep1: "在您的PADM产品包装上找到防伪标签。",
+    howStep2: "使用手机相机或任意二维码扫描工具扫描防伪码。",
+    howStep3: "系统将跳转至本验证页面，结果将确认产品真伪。",
+    howStep4: "验证为正品后，立即登记质保，享受完整保护。",
+    footerSupport: "客服支持",
+    validFirst: "POPORACING PADM 正品认证",
+    validFirstDesc: "这是 Poporacing PADM 正品。<strong>欢迎加入 Poporacing 大家庭。</strong>",
+    validRepeat: "已扫描过",
+    validRepeatDesc: "此编码已被扫描 {n} 次。首次扫描：{time}。<strong>若您并非首次扫描者，该产品可能为仿冒品。</strong>请立即联系我们。",
+    invalid: "无效编码",
+    invalidDesc: "此编码未在数据库中查询到。<strong>该产品可能为仿冒品。</strong>请携带此编码联系我们调查。",
+    labelCode: "防伪码",
+    labelFirst: "首次扫描",
+    labelScans: "扫描次数",
+    labelStatus: "验证状态",
+    statusGenuine: "正品",
+    statusSuspicious: "可疑",
+    statusInvalid: "无效",
+    promiseTitle: "POPORACING 质保承诺",
+    promiseCta: "立即申请质保 / 登记",
+    promises: [
+      { icon: "🛡️", text: "<strong>2年质保：</strong>每一件正品 PADM 产品均享受 24 个月的制造缺陷质保服务。" },
+      { icon: "🔧", text: "<strong>免费更换：</strong>任何经验证为正品的商品，若存在制造缺陷，质保期内免费更换。" },
+      { icon: "🌍", text: "<strong>全球质保支持：</strong>质保全球有效，申请请发邮件至 poporacing1@gmail.com。" },
+      { icon: "🚀", text: "<strong>终身技术支持：</strong>正品 PADM 车主享有免费的安装指导和产品咨询服务。" }
+    ]
+  }
+};
+
+let currentLang = "en";
+let codesDB = {};
+
+function T() { return i18n[currentLang] || i18n.en; }
+
+function applyLang() {
+  const t = T();
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (t[key] !== undefined) {
+      el.textContent = t[key];
+    }
+  });
+  document.querySelectorAll(".lang-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-lang") === currentLang);
+  });
+}
+
+function lookupCode(code) {
+  code = (code || "").trim().toUpperCase();
+  if (!code) return { ok: false, reason: "empty" };
+  return { ok: true, code: code, entry: codesDB[code] || null };
+}
+
+function getLocalRecord(code) {
+  try {
+    const all = JSON.parse(localStorage.getItem("poporacing_scans") || "{}");
+    return all[code] || { scan_count: 0, first_time: null, last_time: null };
+  } catch (e) { return { scan_count: 0, first_time: null, last_time: null }; }
+}
+function setLocalRecord(code, rec) {
+  try {
+    const all = JSON.parse(localStorage.getItem("poporacing_scans") || "{}");
+    all[code] = rec;
+    localStorage.setItem("poporacing_scans", JSON.stringify(all));
+  } catch (e) {}
+}
+
+function showResult(type, icon, title, desc, details, showPromise) {
+  const box = document.getElementById("resultBox");
+  const t = T();
+  box.className = "result-box " + type;
+  box.style.display = "block";
+
+  let promiseHTML = "";
+  if (showPromise) {
+    const items = t.promises.map(p =>
+      `<div class="promise-item">
+        <div class="promise-icon">${p.icon}</div>
+        <div class="promise-text">${p.text}</div>
+      </div>`
+    ).join("");
+    const code = (details.find(d => d.label === t.labelCode) || {}).value || "";
+    const ctaHref = `mailto:poporacing1@gmail.com?subject=PADM%20Warranty%20Claim&body=Hello%2C%20I%20would%20like%20to%20register%20my%20PADM%20product%20warranty.%0A%0ACode%3A%20${encodeURIComponent(code)}`;
+    promiseHTML = `
+      <div class="promise-section">
+        <div class="promise-header">
+          <span>🛡️</span>
+          <span>${t.promiseTitle}</span>
+        </div>
+        <div class="promise-body">${items}</div>
+        <a href="${ctaHref}" class="promise-cta">📋 ${t.promiseCta}</a>
+      </div>
+    `;
+  }
+
+  const detailHTML = details.map(d =>
+    `<div class="detail-row"><span class="label">${d.label}</span><span class="value">${d.value}</span></div>`
+  ).join("");
+
+  box.innerHTML = `
+    <div class="result-icon">${icon}</div>
+    <div class="result-title">${title}</div>
+    <div class="result-desc">${desc}</div>
+    <div class="detail-table">${detailHTML}</div>
+    ${promiseHTML}
+  `;
+}
+
+function verify(codeOverride) {
+  const t = T();
+  const raw = (codeOverride || document.getElementById("codeInput").value || "").trim().toUpperCase();
+  if (!raw) return;
+  const result = lookupCode(raw);
+  if (!result.ok) return;
+
+  const code = result.code;
+  const entry = result.entry;
+
+  if (!entry) {
+    showResult("danger", "❌", t.invalid, t.invalidDesc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelStatus, value: t.statusInvalid }
+    ], false);
+    return;
+  }
+
+  const localRec = getLocalRecord(code);
+  localRec.scan_count = (localRec.scan_count || 0) + 1;
+  if (!localRec.first_time) localRec.first_time = new Date().toISOString();
+  localRec.last_time = new Date().toISOString();
+  setLocalRecord(code, localRec);
+
+  const firstTime = new Date(localRec.first_time).toLocaleString();
+
+  if (localRec.scan_count === 1) {
+    showResult("success", "✅", t.validFirst, t.validFirstDesc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelFirst,  value: firstTime },
+      { label: t.labelScans,  value: "1" },
+      { label: t.labelStatus, value: t.statusGenuine }
+    ], true);
+  } else {
+    const desc = t.validRepeatDesc.replace("{n}", localRec.scan_count).replace("{time}", firstTime);
+    showResult("warning", "⚠️", t.validRepeat, desc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelFirst,  value: firstTime },
+      { label: t.labelScans,  value: String(localRec.scan_count) },
+      { label: t.labelStatus, value: t.statusSuspicious + " ⚠️" }
+    ], false);
+  }
+}
+
+async function loadDB() {
+  try {
+    const res = await fetch("codes_db.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("DB load failed: " + res.status);
+    codesDB = await res.json();
+    console.log("[Poporacing] Loaded", Object.keys(codesDB).length, "codes.");
+  } catch (e) {
+    console.error("[Poporacing] DB load error:", e);
+    codesDB = {};
+  }
+}
+
+function autoFillFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code") || params.get("c");
+  if (code) {
+    document.getElementById("codeInput").value = code;
+    setTimeout(() => verify(code), 300);
+  }
+}
+
+function detectLang() {
+  const saved = localStorage.getItem("poporacing_lang");
+  if (saved && i18n[saved]) return saved;
+  const browserLang = (navigator.language || "en").toLowerCase();
+  if (browserLang.startsWith("ru")) return "ru";
+  if (browserLang.startsWith("zh")) return "zh";
+  if (browserLang.startsWith("es")) return "es";
+  return "en";
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  currentLang = detectLang();
+  applyLang();
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentLang = btn.getAttribute("data-lang");
+      localStorage.setItem("poporacing_lang", currentLang);
+      applyLang();
+    });
+  });
+
+  document.getElementById("verifyBtn").addEventListener("click", () => verify());
+  document.getElementById("codeInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") verify();
+  });
+
+  await loadDB();
+  autoFillFromURL();
+});
+</script>
+
+</body>
+</html>
+
+    --primary-light: #1a2744;
+    --accent: #d4af37;
+    --accent2: #f4cf68;
+    --gold-light: #fff8e1;
+    --success: #1a7f4d;
+    --success-bg: #e8f5ee;
+    --warning: #b8860b;<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPORACING PADM - Authenticity Verification</title>
+<style>
+  :root {
+    --primary: #0a1628;
+    --primary-light: #1a2744;
+    --accent: #d4af37;
+    --accent2: #f4cf68;
+    --gold-light: #fff8e1;
+    --success: #1a7f4d;
+    --success-bg: #e8f5ee;
+    --warning: #b8860b;
+    --warning-bg: #fff8e1;
+    --danger: #b91c1c;
+    --danger-bg: #fef2f2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f5f0;
+    min-height: 100vh;
+    color: #222;
+  }
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 36px 20px 28px;
+    text-align: center;
+    color: #fff;
+    border-bottom: 3px solid var(--accent);
+  }
+  .hero-brand { color: var(--accent); font-size: 14px; letter-spacing: 4px; font-weight: 600; margin-bottom: 8px; }
+  .hero-title { font-size: 38px; font-weight: 900; letter-spacing: 6px; margin-bottom: 6px; }
+  .hero-sub { color: #b8c0d0; font-size: 11px; letter-spacing: 2px; margin-bottom: 18px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(212,175,55,0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .container { max-width: 600px; margin: 0 auto; padding: 24px 20px 60px; }
+  .lang-switcher { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .lang-btn {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    padding: 6px 14px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #555;
+    transition: all 0.2s;
+  }
+  .lang-btn.active { background: var(--primary); color: var(--accent); border-color: var(--primary); font-weight: 600; }
+  .verify-card { background: #fff; border-radius: 14px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .verify-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #222; }
+  .input-group { display: flex; gap: 8px; }
+  .code-input {
+    flex: 1;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: "SF Mono", "Monaco", monospace;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 8px;
+    outline: none;
+    letter-spacing: 1px;
+    transition: border 0.2s;
+  }
+  .code-input:focus { border-color: var(--accent); }
+  .verify-btn {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .verify-btn:hover { background: var(--primary-light); }
+  .help-text { font-size: 11.5px; color: #888; margin-top: 10px; line-height: 1.6; }
+  .result-box { margin-top: 24px; border-radius: 12px; padding: 20px; text-align: center; }
+  .result-box.success { background: var(--success-bg); border: 2px solid var(--success); }
+  .result-box.warning { background: var(--warning-bg); border: 2px solid var(--warning); }
+  .result-box.danger  { background: var(--danger-bg);  border: 2px solid var(--danger); }
+  .result-icon { font-size: 48px; margin-bottom: 8px; }
+  .result-title { font-size: 17px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+  .result-box.success .result-title { color: var(--success); }
+  .result-box.warning .result-title { color: var(--warning); }
+  .result-box.danger  .result-title { color: var(--danger); }
+  .result-desc { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 14px; }
+  .result-desc strong { color: #222; }
+  .detail-table { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; text-align: left; }
+  .detail-row { display: flex; justify-content: space-between; padding: 9px 14px; font-size: 12.5px; border-bottom: 1px solid #f0f0f0; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row .label { color: #888; }
+  .detail-row .value { color: #222; font-weight: 600; font-family: "SF Mono", "Monaco", monospace; }
+  .promise-section {
+    margin-top: 24px;
+    background: #fff;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.18);
+    animation: promiseFadeIn 0.5s ease;
+  }
+  @keyframes promiseFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .promise-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a2744 100%);
+    color: var(--accent);
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .promise-body { padding: 16px 18px; }
+  .promise-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed #f0e6c8;
+  }
+  .promise-item:last-child { border-bottom: none; }
+  .promise-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold-light);
+    border-radius: 8px;
+  }
+  .promise-text { font-size: 12.5px; line-height: 1.6; color: #444; flex: 1; }
+  .promise-cta {
+    display: block;
+    margin: 14px 18px 18px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    color: var(--primary);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .promise-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
+  .help-section { margin-top: 30px; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .help-title { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 14px; }
+  .help-item { display: flex; gap: 12px; margin-bottom: 12px; font-size: 12.5px; line-height: 1.6; color: #555; }
+  .help-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .footer { text-align: center; margin-top: 30px; font-size: 11px; color: #888; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">POPORACING</div>
+  <div class="hero-title">PADM</div>
+  <div class="hero-sub">PREMIUM AUTOMOTIVE PERFORMANCE</div>
+  <div class="hero-badge">✓ AUTHENTICITY VERIFIED</div>
+</div>
+
+<div class="container">
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="zh">ZH</button>
+  </div>
+
+  <div class="verify-card">
+    <div class="verify-title" data-i18n="verifyTitle">Enter Anti-Counterfeiting Code</div>
+    <div class="input-group">
+      <input type="text" id="codeInput" class="code-input" placeholder="12345678" maxlength="8" inputmode="numeric" pattern="[0-9]*">
+      <button id="verifyBtn" class="verify-btn" data-i18n="verifyBtn">VERIFY</button>
+    </div>
+    <div class="help-text" data-i18n="verifyHelp">Scan QR code on product, or enter the code below the QR sticker (format: PADM-XXXXXXXXXX-XX)</div>
+
+    <div id="resultBox" style="display:none;"></div>
+  </div>
+
+  <div class="help-section">
+    <div class="help-title" data-i18n="howTitle">HOW TO VERIFY</div>
+    <div class="help-item"><div class="help-num">1</div><div data-i18n="howStep1">Locate the anti-counterfeiting sticker on your PADM product packaging.</div></div>
+    <div class="help-item"><div class="help-num">2</div><div data-i18n="howStep2">Use your phone camera or any QR scanner to scan the QR code.</div></div>
+    <div class="help-item"><div class="help-num">3</div><div data-i18n="howStep3">You will be redirected to this verification page. The result confirms authenticity.</div></div>
+    <div class="help-item"><div class="help-num">4</div><div data-i18n="howStep4">If verified as genuine, register your product warranty for full protection.</div></div>
+  </div>
+
+  <div class="footer">
+    &copy; 2026 Poporacing. All rights reserved.<br>
+    <span data-i18n="footerSupport">Customer support</span>: support@poporacing.com
+  </div>
+</div>
+
+<script>
+const i18n = {
+  en: {
+    verifyTitle: "Enter Anti-Counterfeiting Code",
+    verifyBtn: "VERIFY",
+    verifyHelp: "Scan QR code on product, or enter the 8-digit code on the sticker (e.g. 12345678)",
+    howTitle: "HOW TO VERIFY",
+    howStep1: "Locate the anti-counterfeiting sticker on your PADM product packaging.",
+    howStep2: "Use your phone camera or any QR scanner to scan the QR code.",
+    howStep3: "You will be redirected to this verification page. The result confirms authenticity.",
+    howStep4: "If verified as genuine, register your product warranty for full protection.",
+    footerSupport: "Customer support",
+    validFirst: "GENUINE POPORACING PADM",
+    validFirstDesc: "This is an authentic Poporacing PADM product. <strong>Welcome to the Poporacing family.</strong>",
+    validRepeat: "ALREADY SCANNED",
+    validRepeatDesc: "This code has been scanned {n} time(s). First scan: {time}. <strong>If you did not scan first, this product may be counterfeit.</strong> Contact us immediately.",
+    invalid: "INVALID CODE",
+    invalidDesc: "This code is not recognized in our database. <strong>This product may be counterfeit.</strong> Please contact us with this code for investigation.",
+    labelCode: "Security Code",
+    labelFirst: "First Scan",
+    labelScans: "Total Scans",
+    labelStatus: "Verification Status",
+    statusGenuine: "GENUINE",
+    statusSuspicious: "SUSPICIOUS",
+    statusInvalid: "INVALID",
+    promiseTitle: "POPORACING WARRANTY PROMISE",
+    promiseCta: "REGISTER WARRANTY / CLAIM",
+    promises: [
+      { icon: "🛡️", text: "<strong>2-Year Warranty:</strong> Every genuine PADM product is backed by a 24-month warranty against manufacturing defects." },
+      { icon: "🔧", text: "<strong>Free Replacement:</strong> Any verified genuine product with a manufacturing defect is replaced free of charge within the warranty period." },
+      { icon: "🌍", text: "<strong>Global Warranty Support:</strong> Warranty is valid worldwide. Contact poporacing1@gmail.com to file a claim." },
+      { icon: "🚀", text: "<strong>Lifetime Technical Support:</strong> Genuine PADM owners receive free installation guidance and product consultation." }
+    ]
+  },
+  ru: {
+    verifyTitle: "Введите код подлинности",
+    verifyBtn: "ПРОВЕРИТЬ",
+    verifyHelp: "Отсканируйте QR-код на упаковке или введите 8-значный код с наклейки (например: 12345678)",
+    howTitle: "КАК ПРОВЕРИТЬ",
+    howStep1: "Найдите защитную наклейку на упаковке вашего продукта PADM.",
+    howStep2: "Используйте камеру телефона или любое приложение для сканирования QR-кодов.",
+    howStep3: "Вы будете перенаправлены на эту страницу проверки. Результат подтвердит подлинность.",
+    howStep4: "Если продукт подлинный, зарегистрируйте гарантию для полной защиты.",
+    footerSupport: "Поддержка клиентов",
+    validFirst: "ПОДЛИННЫЙ POPORACING PADM",
+    validFirstDesc: "Это подлинный продукт Poporacing PADM. <strong>Добро пожаловать в семью Poporacing.</strong>",
+    validRepeat: "УЖЕ ПРОВЕРЕНО",
+    validRepeatDesc: "Этот код был отсканирован {n} раз(а). Первая проверка: {time}. <strong>Если вы не проверяли первым, возможно это подделка.</strong> Свяжитесь с нами немедленно.",
+    invalid: "НЕВЕРНЫЙ КОД",
+    invalidDesc: "Этот код не найден в нашей базе данных. <strong>Возможно, это подделка.</strong> Свяжитесь с нами для расследования.",
+    labelCode: "Код безопасности",
+    labelFirst: "Первая проверка",
+    labelScans: "Всего проверок",
+    labelStatus: "Статус проверки",
+    statusGenuine: "ПОДЛИННЫЙ",
+    statusSuspicious: "ПОДОЗРИТЕЛЬНО",
+    statusInvalid: "НЕВЕРНЫЙ",
+    promiseTitle: "ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА POPORACING",
+    promiseCta: "ЗАРЕГИСТРИРОВАТЬ ГАРАНТИЮ",
+    promises: [
+      { icon: "🛡️", text: "<strong>2-летняя гарантия:</strong> Каждый подлинный продукт PADM защищён 24-месячной гарантией от производственных дефектов." },
+      { icon: "🔧", text: "<strong>Бесплатная замена:</strong> Любой подлинный товар с производственным дефектом заменяется бесплатно в течение гарантийного срока." },
+      { icon: "🌍", text: "<strong>Глобальная гарантийная поддержка:</strong> Гарантия действует по всему миру. poporacing1@gmail.com для претензий." },
+      { icon: "🚀", text: "<strong>Пожизненная техническая поддержка:</strong> Владельцы подлинных PADM получают бесплатные консультации по установке." }
+    ]
+  },
+  es: {
+    verifyTitle: "Ingrese el código anti-falsificación",
+    verifyBtn: "VERIFICAR",
+    verifyHelp: "Escanee el código QR del producto o ingrese el código de 8 dígitos de la etiqueta (ej: 12345678)",
+    howTitle: "CÓMO VERIFICAR",
+    howStep1: "Ubique la pegatina anti-falsificación en el empaque de su producto PADM.",
+    howStep2: "Use la cámara de su teléfono o cualquier escáner QR para escanear el código.",
+    howStep3: "Será redirigido a esta página de verificación. El resultado confirma la autenticidad.",
+    howStep4: "Si se verifica como genuino, registre la garantía de su producto para protección total.",
+    footerSupport: "Atención al cliente",
+    validFirst: "POPORACING PADM GENUINO",
+    validFirstDesc: "Este es un producto Poporacing PADM auténtico. <strong>Bienvenido a la familia Poporacing.</strong>",
+    validRepeat: "YA ESCANEADO",
+    validRepeatDesc: "Este código ha sido escaneado {n} vez/veces. Primer escaneo: {time}. <strong>Si no escaneó primero, este producto podría ser falso.</strong> Contáctenos inmediatamente.",
+    invalid: "CÓDIGO INVÁLIDO",
+    invalidDesc: "Este código no se reconoce en nuestra base de datos. <strong>Este producto podría ser falso.</strong> Contáctenos con este código para investigación.",
+    labelCode: "Código de seguridad",
+    labelFirst: "Primer escaneo",
+    labelScans: "Escaneos totales",
+    labelStatus: "Estado de verificación",
+    statusGenuine: "GENUINO",
+    statusSuspicious: "SOSPECHOSO",
+    statusInvalid: "INVÁLIDO",
+    promiseTitle: "PROMESA DE GARANTÍA POPORACING",
+    promiseCta: "REGISTRAR GARANTÍA",
+    promises: [
+      { icon: "🛡️", text: "<strong>Garantía de 2 años:</strong> Cada producto PADM genuino está respaldado por una garantía de 24 meses contra defectos de fabricación." },
+      { icon: "🔧", text: "<strong>Reemplazo gratuito:</strong> Cualquier producto genuino verificado con defecto de fabricación se reemplaza sin costo dentro del período de garantía." },
+      { icon: "🌍", text: "<strong>Soporte de garantía global:</strong> La garantía es válida en todo el mundo. poporacing1@gmail.com para reclamos." },
+      { icon: "🚀", text: "<strong>Soporte técnico de por vida:</strong> Los propietarios de PADM genuino reciben orientación gratuita de instalación." }
+    ]
+  },
+  zh: {
+    verifyTitle: "请输入防伪码",
+    verifyBtn: "验 证",
+    verifyHelp: "扫描产品上的二维码，或直接输入标签上的8位数字防伪码（如：12345678）",
+    howTitle: "验证步骤",
+    howStep1: "在您的PADM产品包装上找到防伪标签。",
+    howStep2: "使用手机相机或任意二维码扫描工具扫描防伪码。",
+    howStep3: "系统将跳转至本验证页面，结果将确认产品真伪。",
+    howStep4: "验证为正品后，立即登记质保，享受完整保护。",
+    footerSupport: "客服支持",
+    validFirst: "POPORACING PADM 正品认证",
+    validFirstDesc: "这是 Poporacing PADM 正品。<strong>欢迎加入 Poporacing 大家庭。</strong>",
+    validRepeat: "已扫描过",
+    validRepeatDesc: "此编码已被扫描 {n} 次。首次扫描：{time}。<strong>若您并非首次扫描者，该产品可能为仿冒品。</strong>请立即联系我们。",
+    invalid: "无效编码",
+    invalidDesc: "此编码未在数据库中查询到。<strong>该产品可能为仿冒品。</strong>请携带此编码联系我们调查。",
+    labelCode: "防伪码",
+    labelFirst: "首次扫描",
+    labelScans: "扫描次数",
+    labelStatus: "验证状态",
+    statusGenuine: "正品",
+    statusSuspicious: "可疑",
+    statusInvalid: "无效",
+    promiseTitle: "POPORACING 质保承诺",
+    promiseCta: "立即申请质保 / 登记",
+    promises: [
+      { icon: "🛡️", text: "<strong>2年质保：</strong>每一件正品 PADM 产品均享受 24 个月的制造缺陷质保服务。" },
+      { icon: "🔧", text: "<strong>免费更换：</strong>任何经验证为正品的商品，若存在制造缺陷，质保期内免费更换。" },
+      { icon: "🌍", text: "<strong>全球质保支持：</strong>质保全球有效，申请请发邮件至 poporacing1@gmail.com。" },
+      { icon: "🚀", text: "<strong>终身技术支持：</strong>正品 PADM 车主享有免费的安装指导和产品咨询服务。" }
+    ]
+  }
+};
+
+let currentLang = "en";
+let codesDB = {};
+
+function T() { return i18n[currentLang] || i18n.en; }
+
+function applyLang() {
+  const t = T();
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (t[key] !== undefined) {
+      el.textContent = t[key];
+    }
+  });
+  document.querySelectorAll(".lang-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("data-lang") === currentLang);
+  });
+}
+
+function lookupCode(code) {
+  code = (code || "").trim().toUpperCase();
+  if (!code) return { ok: false, reason: "empty" };
+  return { ok: true, code: code, entry: codesDB[code] || null };
+}
+
+function getLocalRecord(code) {
+  try {
+    const all = JSON.parse(localStorage.getItem("poporacing_scans") || "{}");
+    return all[code] || { scan_count: 0, first_time: null, last_time: null };
+  } catch (e) { return { scan_count: 0, first_time: null, last_time: null }; }
+}
+function setLocalRecord(code, rec) {
+  try {
+    const all = JSON.parse(localStorage.getItem("poporacing_scans") || "{}");
+    all[code] = rec;
+    localStorage.setItem("poporacing_scans", JSON.stringify(all));
+  } catch (e) {}
+}
+
+function showResult(type, icon, title, desc, details, showPromise) {
+  const box = document.getElementById("resultBox");
+  const t = T();
+  box.className = "result-box " + type;
+  box.style.display = "block";
+
+  let promiseHTML = "";
+  if (showPromise) {
+    const items = t.promises.map(p =>
+      `<div class="promise-item">
+        <div class="promise-icon">${p.icon}</div>
+        <div class="promise-text">${p.text}</div>
+      </div>`
+    ).join("");
+    const code = (details.find(d => d.label === t.labelCode) || {}).value || "";
+    const ctaHref = `mailto:poporacing1@gmail.com?subject=PADM%20Warranty%20Claim&body=Hello%2C%20I%20would%20like%20to%20register%20my%20PADM%20product%20warranty.%0A%0ACode%3A%20${encodeURIComponent(code)}`;
+    promiseHTML = `
+      <div class="promise-section">
+        <div class="promise-header">
+          <span>🛡️</span>
+          <span>${t.promiseTitle}</span>
+        </div>
+        <div class="promise-body">${items}</div>
+        <a href="${ctaHref}" class="promise-cta">📋 ${t.promiseCta}</a>
+      </div>
+    `;
+  }
+
+  const detailHTML = details.map(d =>
+    `<div class="detail-row"><span class="label">${d.label}</span><span class="value">${d.value}</span></div>`
+  ).join("");
+
+  box.innerHTML = `
+    <div class="result-icon">${icon}</div>
+    <div class="result-title">${title}</div>
+    <div class="result-desc">${desc}</div>
+    <div class="detail-table">${detailHTML}</div>
+    ${promiseHTML}
+  `;
+}
+
+function verify(codeOverride) {
+  const t = T();
+  const raw = (codeOverride || document.getElementById("codeInput").value || "").trim().toUpperCase();
+  if (!raw) return;
+  const result = lookupCode(raw);
+  if (!result.ok) return;
+
+  const code = result.code;
+  const entry = result.entry;
+
+  if (!entry) {
+    showResult("danger", "❌", t.invalid, t.invalidDesc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelStatus, value: t.statusInvalid }
+    ], false);
+    return;
+  }
+
+  const localRec = getLocalRecord(code);
+  localRec.scan_count = (localRec.scan_count || 0) + 1;
+  if (!localRec.first_time) localRec.first_time = new Date().toISOString();
+  localRec.last_time = new Date().toISOString();
+  setLocalRecord(code, localRec);
+
+  const firstTime = new Date(localRec.first_time).toLocaleString();
+
+  if (localRec.scan_count === 1) {
+    showResult("success", "✅", t.validFirst, t.validFirstDesc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelFirst,  value: firstTime },
+      { label: t.labelScans,  value: "1" },
+      { label: t.labelStatus, value: t.statusGenuine }
+    ], true);
+  } else {
+    const desc = t.validRepeatDesc.replace("{n}", localRec.scan_count).replace("{time}", firstTime);
+    showResult("warning", "⚠️", t.validRepeat, desc, [
+      { label: t.labelCode,   value: code },
+      { label: t.labelFirst,  value: firstTime },
+      { label: t.labelScans,  value: String(localRec.scan_count) },
+      { label: t.labelStatus, value: t.statusSuspicious + " ⚠️" }
+    ], false);
+  }
+}
+
+async function loadDB() {
+  try {
+    const res = await fetch("codes_db.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("DB load failed: " + res.status);
+    codesDB = await res.json();
+    console.log("[Poporacing] Loaded", Object.keys(codesDB).length, "codes.");
+  } catch (e) {
+    console.error("[Poporacing] DB load error:", e);
+    codesDB = {};
+  }
+}
+
+function autoFillFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code") || params.get("c");
+  if (code) {
+    document.getElementById("codeInput").value = code;
+    setTimeout(() => verify(code), 300);
+  }
+}
+
+function detectLang() {
+  const saved = localStorage.getItem("poporacing_lang");
+  if (saved && i18n[saved]) return saved;
+  const browserLang = (navigator.language || "en").toLowerCase();
+  if (browserLang.startsWith("ru")) return "ru";
+  if (browserLang.startsWith("zh")) return "zh";
+  if (browserLang.startsWith("es")) return "es";
+  return "en";
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  currentLang = detectLang();
+  applyLang();
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentLang = btn.getAttribute("data-lang");
+      localStorage.setItem("poporacing_lang", currentLang);
+      applyLang();
+    });
+  });
+
+  document.getElementById("verifyBtn").addEventListener("click", () => verify());
+  document.getElementById("codeInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") verify();
+  });
+
+  await loadDB();
+  autoFillFromURL();
+});
+</script>
+
+</body>
+</html>
+
     --warning-bg: #fff8e1;
     --danger: #b91c1c;
     --danger-bg: #fef2f2;
